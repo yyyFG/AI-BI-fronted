@@ -70,12 +70,6 @@ declare namespace API {
     message?: string;
   };
 
-  type BaseResponseString_ = {
-    code?: number;
-    data?: string;
-    message?: string;
-  };
-
   type BaseResponseTeam_ = {
     code?: number;
     data?: Team;
@@ -121,6 +115,11 @@ declare namespace API {
     chartType?: string;
     goal?: string;
     name?: string;
+  };
+
+  type ChartAddToTeamRequest = {
+    chartId?: number;
+    teamId?: number;
   };
 
   type ChartQueryRequest = {
@@ -285,6 +284,10 @@ declare namespace API {
     id?: number;
   };
 
+  type SseEmitter = {
+    timeout?: number;
+  };
+
   type Team = {
     createTime?: string;
     description?: string;
@@ -312,6 +315,11 @@ declare namespace API {
     sortOrder?: string;
   };
 
+  type teamSSEConnectUsingGETParams = {
+    /** teamId */
+    teamId: number;
+  };
+
   type TeamVO = {
     createTime?: string;
     description?: string;
@@ -322,10 +330,6 @@ declare namespace API {
     name?: string;
     userId?: number;
     userVO?: UserVO;
-  };
-
-  type uploadFileUsingPOSTParams = {
-    biz?: string;
   };
 
   type User = {
@@ -370,6 +374,11 @@ declare namespace API {
     checkPassword?: string;
     userAccount?: string;
     userPassword?: string;
+  };
+
+  type userSSEConnectUsingGETParams = {
+    /** userId */
+    userId: number;
   };
 
   type UserUpdateMyRequest = {

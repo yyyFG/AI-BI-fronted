@@ -1,12 +1,13 @@
 import React, {useEffect, useState} from 'react';
 import {listMyChartByPageUsingPost} from "@/services/yubi/chartController";
-import {Button, Divider, Input, message, Result} from "antd";
+import {Button, Divider, Form, Input, message, Modal, Result, Select} from "antd";
 import { Avatar, List, Space } from 'antd';
 import ReactECharts from "echarts-for-react";
 const { Search } = Input;
 import {useModel} from "@@/exports";
 import {Card} from "antd-mobile-alita";
-import {makeBackground} from "echarts/types/src/component/helper/listComponent";
+import {listAllMyJoinedTeamUsingGet} from "@/services/yubi/teamController";
+import {addChartToTeamUsingPost} from "@/services/yubi/chartController";
 
 /**
  * 我的图表页面
@@ -27,6 +28,23 @@ const MyChart: React.FC = () => {
   const [chartList, setChartList] = useState<API.Chart[]>();
   const [total, setTotal] = useState<number>(0);
   const [loading, setLoading] = useState<boolean>(true);
+  const [teamModalVisible, setTeamModalVisible] = useState(false);
+  const [teamList, setTeamList] = useState<API.Team[]>([]);
+  const [teamId, setTeamId] = useState<number>();
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+
+  const [selectedChart, setSelectedChart] = useState<API.Chart>({
+    id: 0,
+    name: '',
+    goal: '',
+    chartType: '',
+    chartData: '',
+    genChart: '',
+    genResult: '',
+    status: '',
+    execMessage: '',
+  });
 
   const loadData = async () =>{
     setLoading(true);
@@ -52,7 +70,44 @@ const MyChart: React.FC = () => {
       message.error('获取图表失败' + e.message);
     }
     setLoading(false);
-  }
+  };
+
+  const addChartToTeam = async () => {
+    // console.log(selectedChart.id)
+    try {
+      const res = await addChartToTeamUsingPost({chartId: selectedChart.id, teamId: teamId});
+      if (res.data) {
+        message.success('添加到队伍成功');
+      } else {
+        message.error('添加到队伍失败,' + `${res.message}`);
+      }
+    } catch (e: any) {
+      message.error('添加到队伍失败，' + e.message);
+    }
+    setTeamModalVisible(false)
+  };
+
+
+  const showTeamModal = async (chart: API.Chart) => {
+    setTeamModalVisible(true);
+    setSelectedChart(chart)
+    try {
+      const res : any = await listAllMyJoinedTeamUsingGet();
+      if (res.data) {
+        setTeamList(res.data ?? []);
+      } else {
+        message.info('暂无任何队伍');
+      }
+    } catch (e: any) {
+      message.error('获取队伍列表失败，' + e.message);
+    }
+  };
+
+  // 关闭模态框
+  const handleCancel = () => {
+    setIsModalOpen(false);
+  };
+
 
   useEffect(() => {
     loadData();
@@ -125,7 +180,47 @@ const MyChart: React.FC = () => {
               {
                 item.status === "succeed" && <>
                   <div style={{marginBottom: 16}}/>
-                  <p>{'分析目标: ' + item.goal}</p>
+                    <div
+                      style={{
+                        display: 'flex',
+                        justifyContent: 'space-between',
+                        alignItems: 'center',
+                      }}
+                    >
+                      <p style={{margin: 0}}>{'分析目标：' + item.goal}</p>
+                      <div>
+                        {/*<Button style={{ backgroundColor: '#1c66ff', color: 'white'}} onClick={() => showTeamModal(item)}>纳入队伍</Button>*/}
+                        <Button style={{ backgroundColor: '#1c66ff', color: 'white'}} onClick={() => showTeamModal(item)}>纳入队伍</Button>
+                      </div>
+                    </div>
+
+                  <Modal
+                    title="将图表纳入队伍"
+                    open={teamModalVisible}
+                    onOk={() => addChartToTeam()}
+                    onCancel={() => setTeamModalVisible(false)}
+                    okText="确认"
+                    cancelText="取消"
+                  >
+                    <div style={{marginTop: 16}}>
+                      图表名称：
+                      <Input disabled value={selectedChart!.name} style={{width: 350}}/>
+                    </div>
+                    <div style={{marginTop: 10}}>
+                      队伍 ID：
+                      <Select
+                        showSearch
+                        style={{width: '200px'}}
+                        placeholder="请选择队伍 ID"
+                        options={teamList.map(team => ({
+                          value: team.id,
+                          label: team.name
+                        }))}
+                        onChange={(value) => setTeamId(value)}
+                      />
+                    </div>
+                  </Modal>
+
                   <div style={{marginBottom: 16}}/>
                   <ReactECharts option={item.genChart && JSON.parse(item.genChart)}/>
                 </>

@@ -17,6 +17,21 @@ export async function addChartUsingPost(
   });
 }
 
+/** addChartToTeam POST /api/Chart/add/team */
+export async function addChartToTeamUsingPost(
+  body: API.ChartAddToTeamRequest,
+  options?: { [key: string]: any },
+) {
+  return request<API.BaseResponseBoolean_>('/api/Chart/add/team', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    data: body,
+    ...(options || {}),
+  });
+}
+
 /** deleteChart POST /api/Chart/delete */
 export async function deleteChartUsingPost(
   body: API.DeleteRequest,

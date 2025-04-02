@@ -24,7 +24,7 @@ import {
   getTeamByIdUsingGet,
   listTeamChartByPageUsingPost,
   updateTeamUsingPost,
-  regenChartFromTeamUsingPost,
+  regenChartFromTeamUsingPOST,
 } from "@/services/yubi/teamController";
 import {request} from "@/app";
 import {EditOutlined, PlusOutlined} from "@ant-design/icons";
@@ -61,44 +61,6 @@ const TeamChartPage: React.FC = () => {
   const [imgUrl, setImgUrl] = useState<string>('');
   const [fileList, setFileList] = useState<UploadFile[]>([]);
 
-  // 创建 SSE 连接
-  const initializeSSE = () => {
-    if (!currentUser || !currentUser.id) {
-      message.error('无法获取当前用户信息，无法创建 SSE 连接');
-      return;
-    }
-
-    const eventSource = new EventSource(request.baseURL + `/sse/team/connect?teamId=${id}`);
-
-    eventSource.addEventListener('team-chart-update', (event) => {
-      const data = JSON.parse(event.data);
-
-      if (data) {
-        message.success('图表已更新');
-        // 更新 chartList
-        setChartList((prevList) => {
-          const index = prevList.findIndex((item) => item.id === data.id);
-          if (index !== -1) {
-            // 替换已存在的图表
-            const updatedList = [...prevList];
-            updatedList[index] = data;
-            return updatedList;
-          }
-          // 如果不存在，添加到列表末尾
-          return [...prevList, data];
-        });
-      }
-    });
-
-    eventSource.onerror = () => {
-      message.error('SSE 连接发生错误');
-      eventSource.close();
-    };
-
-    return () => {
-      eventSource.close(); // 清理连接
-    };
-  };
 
   // 页面加载时加载数据
   const initData = async () => {
@@ -177,7 +139,6 @@ const TeamChartPage: React.FC = () => {
       const res : any = await updateTeamUsingPost(team!);
       if (res.code === 0) {
         message.success('更新成功');
-        onClose();
         window.location.reload();
       } else {
       message.error('更新失败，' + `${res.message}`);
@@ -186,12 +147,6 @@ const TeamChartPage: React.FC = () => {
       message.error('更新失败，' + e.message);
     }
   };
-
-
-  useEffect(() => {
-    const cleanup = initializeSSE();
-    return cleanup; // 清理 SSE 连接
-  }, []);
 
 
   useEffect(() => {
@@ -232,12 +187,14 @@ const TeamChartPage: React.FC = () => {
   const handleSubmit = async (values: any) => {
     setModalVisible(false);
     try {
-      const res = await regenChartFromTeamUsingPost({...values, teamId: id});
+      const res = await regenChartFromTeamUsingPOST({...values, teamId: id});
       if (!res?.data) {
-        message.error('分析失败,' + `${res.message}`);
+        message.error('分析失败,' + res.message);
       } else {
         message.success('正在重新生成，稍后请在我的图表页面刷新查看');
-        window.location.reload();
+        setTimeout(() => {
+          window.location.reload(); // 2秒后刷新
+        }, 1000); // 2000ms = 2秒
       }
     } catch (e: any) {
       message.error('分析失败，' + e.message);

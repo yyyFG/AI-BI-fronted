@@ -63,6 +63,7 @@ const TeamPage: React.FC = () => {
       const res = await exitTeamUsingPost({ id });
       if (res.data) {
         message.success('退出队伍成功');
+        window.location.reload(); // 2秒后刷新
       }
     } catch (e: any) {
       message.error('退出队伍失败，' + e.message);

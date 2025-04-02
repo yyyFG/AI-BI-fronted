@@ -77,7 +77,6 @@ const AddChartAsync: React.FC = () => {
                 { value: '堆叠图', label: '堆叠图' },
                 { value: '饼图', label: '饼图' },
                 { value: '雷达图', label: '雷达图' },
-                { value: '为我选一种图', label: '为我选一种图' },
               ]}
             />
           </Form.Item>

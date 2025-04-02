@@ -22,10 +22,9 @@ import {
 } from "@/services/yubi/userController";
 
 import {addTeamUsingPost} from "@/services/yubi/teamController";
-
 import TextArea from "antd/es/input/TextArea";
-import {request} from "@/app";
-import {values} from "lodash";
+import {request} from "@umijs/max";
+import {imgUploadUsingPost} from "@/services/yubi/imageController";
 
 const { Title, Text } = Typography;
 
@@ -61,7 +60,6 @@ const UserCenter: React.FC = () => {
     try {
       const res = await addTeamUsingPost(values);
       if (res.code === 0) {
-        onClose();
         message.success('队伍创建成功');
       }else {
         message.error('队伍创建失败，' + res.message);
@@ -69,23 +67,23 @@ const UserCenter: React.FC = () => {
     } catch (e: any) {
       message.error('队伍创建失败，' + e.message);
     }
+    setIsTeamModalOpen(false);
   };
 
-  const onUploadChange = (info: any) => {
-    // 检查上传状态
-    if (info.file.status === 'done') {
-      // 假设返回数据格式为 { url: '图片链接' }
-      const response = info.file.response;
-      if (response && response.data) {
+  const onUploadChange = async (values: any) => {
+    // console.log(values)
+    // 假设返回数据格式为 { url: '图片链接' }
+    const response = values.file.response;
+    // todo 对接后端，上传数据
+      const res = await imgUploadUsingPost(values);
+      console.log(res.message);
+      if (res.code === 0) {
         // 更新表单中的图片链接
         setImgUrl(response.data);
         message.success('图片上传成功');
       } else {
-        message.error('图片上传失败，请检查接口返回值');
+        message.error("上传失败" + res.message)
       }
-    } else if (info.file.status === 'error') {
-      message.error('图片上传失败，请稍后重试');
-    }
   };
 
 
@@ -109,7 +107,7 @@ const UserCenter: React.FC = () => {
 
   // 提交修改信息
   const handleFormSubmit = async (values: Partial<API.User>) => {
-    console.log(currentUser.id)
+    // console.log(currentUser.id)
     values.id = currentUser.id;
     try {
       const res = await updateOrAddUserUsingPost(values);
@@ -321,12 +319,31 @@ const UserCenter: React.FC = () => {
            >
               <TextArea rows={4} />
             </Form.Item>
+          {/*<Form.Item*/}
+          {/*  label="队伍头像链接"*/}
+          {/*  name="imgUrl"*/}
+          {/*  rules={[{ required: true, message: '请输入队伍头像链接' }]}*/}
+          {/*>*/}
+          {/*  <Input placeholder="请输入队伍头像链接" />*/}
+          {/*</Form.Item>*/}
           <Form.Item
-            label="队伍头像链接"
-            name="imgUrl"
-            rules={[{ required: true, message: '请输入队伍头像链接' }]}
+            label="队伍图片"
+            rules={[{ required: true, message: '请上传队伍图片' }]}
           >
-            <Input placeholder="请输入队伍头像链接" />
+            <Upload
+              // action={`${request.baseURL}/home/ubuntu/picture/BIpicture`}
+              name="image"
+              action={`${request.baseURL}/api/image/upload`}
+              enctype="multipart/form-data"
+              listType="picture-card"
+              maxCount={1}
+              onChange={onUploadChange}
+            >
+              <button style={{ border: 0, background: 'none' }} type="button">
+                <PlusOutlined />
+                <div style={{ marginTop: 8 }}>上传图片</div>
+              </button>
+            </Upload>
           </Form.Item>
             <Form.Item>
               <Button type="primary" htmlType="submit" block>

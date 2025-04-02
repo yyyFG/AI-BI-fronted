@@ -3,11 +3,38 @@
 import { request } from '@umijs/max';
 
 /** addTeam POST /api/team/add */
-export async function addTeamUsingPost(
+export async function addTeamUsingPost(body: API.TeamAddRequest, options?: { [key: string]: any }) {
+  return request<API.BaseResponseBoolean_>('/api/team/add', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    data: body,
+    ...(options || {}),
+  });
+}
+
+/** addTeamChart POST /api/team/chart/add */
+export async function addTeamChartUsingPost(
   body: API.TeamAddRequest,
   options?: { [key: string]: any },
 ) {
-  return request<API.BaseResponseBoolean_>('/api/team/add', {
+  return request<API.BaseResponseBIResponse_>('/api/team/chart/add', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    data: body,
+    ...(options || {}),
+  });
+}
+
+/** deleteTeamChart POST /api/team/chart/delete */
+export async function deleteTeamChartUsingPost(
+  body: API.TeamAddRequest,
+  options?: { [key: string]: any },
+) {
+  return request<API.BaseResponseBIResponse_>('/api/team/chart/delete', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -33,11 +60,23 @@ export async function listTeamChartByPageUsingPost(
 }
 
 /** regenChart POST /api/team/chart/regen */
-export async function regenChartFromTeamUsingPost(
+export async function regenChartFromTeamUsingPOST(
   body: API.ChartRegenRequest,
   options?: { [key: string]: any },
 ) {
   return request<API.BaseResponseBIResponse_>('/api/team/chart/regen', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    data: body,
+    ...(options || {}),
+  });
+}
+
+/** updateTeamChart POST /api/team/chart/update */
+export async function updateTeamChartUsingPost(body: API.Team, options?: { [key: string]: any }) {
+  return request<API.BaseResponseBIResponse_>('/api/team/chart/update', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -63,10 +102,7 @@ export async function deleteTeamUsingPost(
 }
 
 /** exitTeam POST /api/team/exit */
-export async function exitTeamUsingPost(
-  body: API.Team,
-  options?: { [key: string]: any },
-) {
+export async function exitTeamUsingPost(body: API.Team, options?: { [key: string]: any }) {
   return request<API.BaseResponseBoolean_>('/api/team/exit', {
     method: 'POST',
     headers: {
@@ -93,10 +129,7 @@ export async function getTeamByIdUsingGet(
 }
 
 /** joinTeam POST /api/team/join */
-export async function joinTeamUsingPost(
-  body: API.Team,
-  options?: { [key: string]: any }
-) {
+export async function joinTeamUsingPost(body: API.Team, options?: { [key: string]: any }) {
   return request<API.BaseResponseBoolean_>('/api/team/join', {
     method: 'POST',
     headers: {
@@ -108,9 +141,7 @@ export async function joinTeamUsingPost(
 }
 
 /** listAllMyJoinedTeam GET /api/team/list/my/joined */
-export async function listAllMyJoinedTeamUsingGet(
-  options?: { [key: string]: any },
-) {
+export async function listAllMyJoinedTeamUsingGet(options?: { [key: string]: any }) {
   return request<API.BaseResponseListTeam_>('/api/team/list/my/joined', {
     method: 'GET',
     ...(options || {}),
@@ -133,7 +164,7 @@ export async function listTeamByPageUsingPost(
 }
 
 /** pageTeam POST /api/team/page */
-export async function listAllTeamByPageUsingPOST(
+export async function pageTeamUsingPost(
   body: API.TeamQueryRequest,
   options?: { [key: string]: any },
 ) {
@@ -163,10 +194,7 @@ export async function pageMyJoinedTeamUsingPost(
 }
 
 /** updateTeam POST /api/team/update */
-export async function updateTeamUsingPost(
-  body: API.Team,
-  options?: { [key: string]: any },
-) {
+export async function updateTeamUsingPost(body: API.Team, options?: { [key: string]: any }) {
   return request<API.BaseResponseBoolean_>('/api/team/update', {
     method: 'POST',
     headers: {

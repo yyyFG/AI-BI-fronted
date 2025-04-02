@@ -2,18 +2,12 @@
 /* eslint-disable */
 import { request } from '@umijs/max';
 
-/** uploadFile POST /api/file/upload */
-export async function uploadFileUsingPost(
-  // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
-  params: API.uploadFileUsingPOSTParams,
-  body: {},
-  file?: File,
-  options?: { [key: string]: any },
-) {
+/** imgUpload POST /api/image/upload */
+export async function imgUploadUsingPost(body: {}, image?: File, options?: { [key: string]: any }) {
   const formData = new FormData();
 
-  if (file) {
-    formData.append('file', file);
+  if (image) {
+    formData.append('image', image);
   }
 
   Object.keys(body).forEach((ele) => {
@@ -32,11 +26,8 @@ export async function uploadFileUsingPost(
     }
   });
 
-  return request<API.BaseResponseString_>('/api/file/upload', {
+  return request<string>('/api/image/upload', {
     method: 'POST',
-    params: {
-      ...params,
-    },
     data: formData,
     requestType: 'form',
     ...(options || {}),
