@@ -3,11 +3,11 @@
 import { request } from '@umijs/max';
 
 /** imgUpload POST /api/image/upload */
-export async function imgUploadUsingPost(body: {}, image?: File, options?: { [key: string]: any }) {
+export async function imgUploadUsingPost(body: {}, file?: File, options?: { [key: string]: any }) {
   const formData = new FormData();
 
-  if (image) {
-    formData.append('image', image);
+  if (file) {
+    formData.append('file', file);
   }
 
   Object.keys(body).forEach((ele) => {
@@ -26,7 +26,7 @@ export async function imgUploadUsingPost(body: {}, image?: File, options?: { [ke
     }
   });
 
-  return request<string>('/api/image/upload', {
+  return request<API.BaseResponseString_>('/api/image/upload', {
     method: 'POST',
     data: formData,
     requestType: 'form',

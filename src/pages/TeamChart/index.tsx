@@ -148,6 +148,49 @@ const TeamChartPage: React.FC = () => {
     }
   };
 
+  // 创建 SSE 连接
+  const initializeSSE = () => {
+    if (!currentUser || !currentUser.id) {
+      message.error('无法获取当前用户信息，无法创建 SSE 连接');
+      return;
+    }
+
+    const eventSource = new EventSource(`http://localhost:8101/api/sse/team/connect?teamId=${id}`);
+
+    eventSource.addEventListener('team-chart-update', (event) => {
+      const data = JSON.parse(event.data);
+
+      if (data) {
+        message.success('图表已更新');
+        // 更新 chartList
+        setChartList((prevList) => {
+          const index = prevList.findIndex((item) => item.id === data.id);
+          if (index !== -1) {
+            // 替换已存在的图表
+            const updatedList = [...prevList];
+            updatedList[index] = data;
+            return updatedList;
+          }
+          // 如果不存在，添加到列表末尾
+          return [...prevList, data];
+        });
+      }
+    });
+
+    eventSource.onerror = () => {
+      message.error('SSE 连接发生错误');
+      eventSource.close();
+    };
+
+    return () => {
+      eventSource.close(); // 清理连接
+    };
+  };
+
+  useEffect(() => {
+    const cleanup = initializeSSE();
+    return cleanup; // 清理 SSE 连接
+  }, []);
 
   useEffect(() => {
     if (isSearch) {
@@ -335,7 +378,7 @@ const TeamChartPage: React.FC = () => {
             <Form.Item label="分析目标" name="goal" initialValue={selectedItem.goal}>
               <Input/>
             </Form.Item>
-            <Form.Item label="原始数据" name="chartType" initialValue={selectedItem.chartType}>
+            <Form.Item label="图表类型" name="chartType" initialValue={selectedItem.chartType}>
               <Select
                 placeholder="请选择图表类型"
                 onChange={(value) => form.setFieldsValue({chartType: value})}

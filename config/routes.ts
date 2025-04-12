@@ -10,11 +10,34 @@ export default [
   { path: '/add_chart', name: '智能分析', icon: 'barChart', component: './AddChart'},
   { path: '/add_chart_async', name: '智能分析(异步)', icon: 'barChart', component: './AddChartAsync'},
   { path: '/my_chart', name: '我的图表', icon: 'CloudOutlined', component: './MyChart'},
-  { path: '/chart_manage', name: '图表管理', icon: 'SettingOutlined', component: './ChartManage'},
+  // { path: '/chart_manage', name: '图表管理', icon: 'SettingOutlined', component: './ChartManage'},
+  {
+    path: '/manage',
+    name: '管理',
+    icon: 'SettingOutlined',
+    routes: [
+      {
+        path: '/manage',
+        redirect: '/manage/chart',
+      },
+      {
+        name: '图表管理',
+        icon: 'smile',
+        path: '/manage/chart',
+        component: './Manage/ChartManage',
+      },
+      {
+        name: '队伍管理',
+        icon: 'smile',
+        path: '/manage/team',
+        component: './Manage/TeamManage',
+      }
+    ]
+  },
   {path: '/team', name: '队伍大厅', icon: 'TeamOutlined', component: './Team'},
-  {path: '/team_my_joined', name: '已加队伍', icon: 'TeamOutlined', component: './TeamMyJoined'},
+  // {path: '/team_my_joined', name: '已加队伍', icon: 'TeamOutlined', component: './TeamMyJoined'},
   {path: '/team/:id/chart', hideInMenu: true, name: '队伍图表', icon: 'pieChart', component: './TeamChart'},
-  { path: '/my_message', name: '个人信息', icon: 'UsergroupDeleteOutlined', component: './MyMessage'},
+  { path: '/my_message', name: '个人信息', icon: 'user', component: './MyMessage'},
   {
     path: '/admin',
     icon: 'crown',

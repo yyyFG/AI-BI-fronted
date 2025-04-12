@@ -100,6 +100,7 @@ export const layout: ({initialState, setInitialState}: { initialState: any; setI
             />
           )}
         </>
+
       );
     },
     ...initialState?.settings,
@@ -112,9 +113,7 @@ export const layout: ({initialState, setInitialState}: { initialState: any; setI
  * @doc https://umijs.org/docs/max/request#配置
  */
 export const request = {
-  // baseURL: "http://localhost:8101",
-  baseURL: isDev ? 'http://localhost:8101' : 'https://biback.yyyai.xyz',
-  // baseURL: "https://biback.yyyai.xyz",
+  baseURL: "http://localhost:8101",
   withCredentials: true,
   ...errorConfig,
 };

@@ -28,6 +28,12 @@ declare namespace API {
     message?: string;
   };
 
+  type BaseResponseListUser_ = {
+    code?: number;
+    data?: User[];
+    message?: string;
+  };
+
   type BaseResponseLoginUserVO_ = {
     code?: number;
     data?: LoginUserVO;
@@ -67,6 +73,12 @@ declare namespace API {
   type BaseResponsePageUserVO_ = {
     code?: number;
     data?: PageUserVO_;
+    message?: string;
+  };
+
+  type BaseResponseString_ = {
+    code?: number;
+    data?: string;
     message?: string;
   };
 
@@ -161,12 +173,6 @@ declare namespace API {
     id?: number;
   };
 
-  type genChartByAIAsyncMQUsingPOSTParams = {
-    chartType?: string;
-    goal?: string;
-    name?: string;
-  };
-
   type genChartByAIAsyncUsingPOSTParams = {
     chartType?: string;
     goal?: string;
@@ -202,6 +208,8 @@ declare namespace API {
   type LoginUserVO = {
     createTime?: string;
     id?: number;
+    score?: number;
+    signIn?: boolean;
     updateTime?: string;
     userAvatar?: string;
     userName?: string;
@@ -320,6 +328,13 @@ declare namespace API {
     teamId: number;
   };
 
+  type TeamUser = {
+    createTime?: string;
+    id?: number;
+    teamId?: number;
+    userId?: number;
+  };
+
   type TeamVO = {
     createTime?: string;
     description?: string;
@@ -336,6 +351,7 @@ declare namespace API {
     createTime?: string;
     id?: number;
     isDelete?: number;
+    score?: number;
     updateTime?: string;
     userAccount?: string;
     userAvatar?: string;

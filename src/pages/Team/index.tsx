@@ -84,7 +84,6 @@ const TeamPage: React.FC = () => {
   }, [searchParams]);
 
 
-
   return (
     <div className="team-page">
       <div>
@@ -100,78 +99,6 @@ const TeamPage: React.FC = () => {
           }}
         />
       </div>
-
-      <FloatButton.Group shape="circle" style={{ insetInlineEnd: 24 }}>
-        <FloatButton
-          icon={
-            <Tooltip title="创建队伍">
-              <PlusCircleOutlined onClick={() => setOpen(true)} />
-            </Tooltip>
-          }
-        />
-        <FloatButton.BackTop visibilityHeight={0} />
-      </FloatButton.Group>
-
-      <Drawer
-        title="创建队伍"
-        width={500}
-        onClose={onClose}
-        open={open}
-        extra={
-          <Space>
-            <Button onClick={onClose}>取消</Button>
-            <Button type="primary" onClick={() => addTeam()}>
-              创建
-            </Button>
-          </Space>
-        }
-      >
-        <Form
-          labelCol={{ span: 4 }}
-          wrapperCol={{ span: 14 }}
-          layout="horizontal"
-          style={{ maxWidth: 600 }}
-          form={form}
-        >
-          <Form.Item
-            label="队伍名称"
-            name="name"
-            rules={[{ required: true, message: '请输入队伍名称' }]}
-          >
-            <Input />
-          </Form.Item>
-          <Form.Item
-            label="最大人数"
-            name="maxNum"
-            rules={[{ required: true, message: '请输入最大人数' }]}
-          >
-            <InputNumber />
-          </Form.Item>
-          <Form.Item
-            label="队伍描述"
-            name="description"
-            rules={[{ required: true, message: '请输入队伍描述' }]}
-          >
-            <TextArea rows={4} />
-          </Form.Item>
-          <Form.Item
-            label="队伍图片"
-            rules={[{ required: true, message: '请上传队伍图片' }]}
-          >
-            <Upload
-              action={`${request.baseURL}/image/upload`}
-              listType="picture-card"
-              maxCount={1}
-              onChange={onUploadChange}
-            >
-              <button style={{ border: 0, background: 'none' }} type="button">
-                <PlusOutlined />
-                <div style={{ marginTop: 8 }}>上传图片</div>
-              </button>
-            </Upload>
-          </Form.Item>
-        </Form>
-      </Drawer>
 
       <TeamList
         teamVOList={teamVOList}

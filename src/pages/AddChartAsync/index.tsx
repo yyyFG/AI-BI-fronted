@@ -84,7 +84,7 @@ const AddChartAsync: React.FC = () => {
           {/* 文件上传 */}
           <Form.Item name="file" label="原始数据">
             <Upload name="file" maxCount={1}>
-              <Button icon={<UploadOutlined />}>上传 CSV 文件</Button>
+              <Button icon={<UploadOutlined />}>上传 XLSX 文件</Button>
             </Upload>
           </Form.Item>
 

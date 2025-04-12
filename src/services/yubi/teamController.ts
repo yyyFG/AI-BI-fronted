@@ -101,6 +101,21 @@ export async function deleteTeamUsingPost(
   });
 }
 
+/** deleteTeamUser POST /api/team/deleteUser */
+export async function deleteTeamUserUsingPost(
+  body: API.DeleteRequest,
+  options?: { [key: string]: any },
+) {
+  return request<API.BaseResponseBoolean_>('/api/team/deleteUser', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    data: body,
+    ...(options || {}),
+  });
+}
+
 /** exitTeam POST /api/team/exit */
 export async function exitTeamUsingPost(body: API.Team, options?: { [key: string]: any }) {
   return request<API.BaseResponseBoolean_>('/api/team/exit', {
@@ -184,6 +199,21 @@ export async function pageMyJoinedTeamUsingPost(
   options?: { [key: string]: any },
 ) {
   return request<API.BaseResponsePageTeamVO_>('/api/team/page/my/joined', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    data: body,
+    ...(options || {}),
+  });
+}
+
+/** pageMyTeamUser POST /api/team/page/my/TeamUser */
+export async function pageMyTeamUserUsingPost(
+  body: API.TeamUser,
+  options?: { [key: string]: any },
+) {
+  return request<API.BaseResponseListUser_>('/api/team/page/my/TeamUser', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
