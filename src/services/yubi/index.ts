@@ -3,6 +3,7 @@
 // API 更新时间：
 // API 唯一标识：
 import * as chartController from './chartController';
+import * as deepSeekController from './deepSeekController';
 import * as imageController from './imageController';
 import * as queueController from './queueController';
 import * as sseController from './sseController';
@@ -10,6 +11,7 @@ import * as teamController from './teamController';
 import * as userController from './userController';
 export default {
   chartController,
+  deepSeekController,
   imageController,
   queueController,
   sseController,

@@ -169,6 +169,10 @@ declare namespace API {
     updateTime?: string;
   };
 
+  type ChatRequest = {
+    content?: string;
+  };
+
   type DeleteRequest = {
     id?: number;
   };
@@ -295,6 +299,8 @@ declare namespace API {
   type SseEmitter = {
     timeout?: number;
   };
+
+  type StreamingResponseBody = true;
 
   type Team = {
     createTime?: string;
