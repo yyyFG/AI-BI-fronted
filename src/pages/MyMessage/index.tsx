@@ -348,6 +348,9 @@ const UserCenter: React.FC = () => {
             <Form.Item label="密码" name="userPassword">
               <Input.Password placeholder="请输入密码"/>
             </Form.Item>
+            <Form.Item label="用户简介" name="userProfile">
+              <Input placeholder="请输入用户简介"/>
+            </Form.Item>
             <Form.Item
               label="头像链接"
               name="userAvatar"
@@ -396,13 +399,6 @@ const UserCenter: React.FC = () => {
             >
               <TextArea rows={4}/>
             </Form.Item>
-            {/*<Form.Item*/}
-            {/*  label="队伍头像链接"*/}
-            {/*  name="imgUrl"*/}
-            {/*  rules={[{ required: true, message: '请输入队伍头像链接' }]}*/}
-            {/*>*/}
-            {/*  <Input placeholder="请输入队伍头像链接" />*/}
-            {/*</Form.Item>*/}
             <Form.Item name='image' label="队伍图片">
               <Upload
                 action={`http://localhost:8101/api/image/upload`}

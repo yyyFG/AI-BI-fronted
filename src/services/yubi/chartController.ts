@@ -47,6 +47,21 @@ export async function deleteChartUsingPost(
   });
 }
 
+/** deleteChartTeam POST /api/Chart/deleteChartTeam */
+export async function deleteChartTeamUsingPost(
+  body: API.DeleteRequest,
+  options?: { [key: string]: any },
+) {
+  return request<API.BaseResponseBoolean_>('/api/Chart/deleteChartTeam', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    data: body,
+    ...(options || {}),
+  });
+}
+
 /** genChartByAI POST /api/Chart/gen */
 export async function genChartByAiUsingPost(
   // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)

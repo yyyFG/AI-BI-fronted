@@ -10,8 +10,6 @@ export async function streamChatUsingPost(body: API.ChatRequest, options?: { [ke
       'Content-Type': 'application/json',
     },
     data: body,
-    responseType: 'stream',  // 关键配置
-    getResponse: true,       // 获取完整响应对象
     ...(options || {}),
   });
 }

@@ -24,18 +24,19 @@ import {
   getTeamByIdUsingGet,
   listTeamChartByPageUsingPost,
   updateTeamUsingPost,
-  regenChartFromTeamUsingPOST,
+  regenChartFromTeamUsingPOST, deleteTeamChartUsingPost,
 } from "@/services/yubi/teamController";
 import {request} from "@/app";
 import {EditOutlined, PlusOutlined} from "@ant-design/icons";
 import TextArea from "antd/es/input/TextArea";
 import {UploadFile} from "antd/lib";
+import {deleteChartTeamUsingPost, deleteChartUsingPost} from "@/services/yubi/chartController";
 
 const TeamChartPage: React.FC = () => {
 
   const {id} = useParams<{ id: string }>();
 
-  console.log(id);
+  // console.log(id);
 
   const [form] = useForm();
   const [teamForm] = useForm();
@@ -60,6 +61,7 @@ const TeamChartPage: React.FC = () => {
   const [open, setOpen] = useState(false);
   const [imgUrl, setImgUrl] = useState<string>('');
   const [fileList, setFileList] = useState<UploadFile[]>([]);
+  const [teamChartId, setTeamChartId] = useState<number>();
 
 
   // 页面加载时加载数据
@@ -264,6 +266,31 @@ const TeamChartPage: React.FC = () => {
     }
   };
 
+  // 删除图表
+  const handleDelete =  async (chart: any) => {
+    // console.log(chart.id)
+    if (!chart) return;
+    Modal.confirm({
+      title: '删除确认',
+      content: '确定要删除该图表吗？此操作不可撤销。',
+      okText: '确认',
+      cancelText: '取消',
+      onOk: async () => {
+        try {
+          const res = await deleteChartTeamUsingPost({id: chart.id});
+          if (res.data) {
+            message.success('删除成功');
+            loadData();
+          } else {
+            message.error('删除失败，' + res.message);
+          }
+        } catch (e: any) {
+          message.error('删除失败，' + e.message);
+        }
+      },
+    });
+  };
+
 
   return (
     <div className="my-chart-page">
@@ -459,13 +486,16 @@ const TeamChartPage: React.FC = () => {
                     <div
                       style={{
                         display: 'flex',
-                        justifyContent: 'space-between',
+                        // justifyContent: 'space-between',
                         alignItems: 'center',
                       }}
                     >
                       <p style={{margin: 0}}>{'分析目标：' + item.goal}</p>
-                      <Button type="primary" onClick={() => handleOpenModal(item)}>
+                      <Button type="primary" style={{left: 220}} onClick={() => handleOpenModal(item)}>
                         修改诉求
+                      </Button>
+                      <Button type="primary" danger style={{left: 240}} onClick={() => handleDelete(item)}>
+                        删除
                       </Button>
                     </div>
                     <div style={{marginBottom: 16}}/>
