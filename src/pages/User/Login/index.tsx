@@ -23,7 +23,7 @@ import {getLoginUserUsingGet, userLoginUsingPost} from "@/services/yubi/userCont
 import {FormattedMessage} from "react-intl";
 import {ProFormCaptcha} from "@ant-design/pro-form";
 import {ProFormCheckbox} from "@ant-design/pro-form/lib";
-
+import stylescss from './index.less';
 
 const useStyles = createStyles(({ token }) => {
   return {
@@ -53,10 +53,36 @@ const useStyles = createStyles(({ token }) => {
       display: 'flex',
       flexDirection: 'column',
       height: '100vh',
-      overflow: 'auto',
+      overflow: 'hidden',
       backgroundImage:
-        "url('https://mdn.alipayobjects.com/yuyan_qk0oxh/afts/img/V-_oS6r-i7wAAAAAAAAAAAAAFl94AQBr')",
+        "url('https://alist.yyyai.xyz/d/picture/BIpicture/Blue-Fade-PNG-Clipart.png?sign=fycpv6XHhb_16wOJ_s0JXjqiV2D85kar6ulhE9i0ZzI=:0')",
       backgroundSize: '100% 100%',
+    },
+    loginWrapper: {
+      position: 'relative',
+      zIndex: 1,
+      flex: 1,
+      padding: '32px 0',
+      display: 'flex',
+      flexDirection: 'column',
+      justifyContent: 'center',
+      alignItems: 'center',
+    },
+    loginFormContainer: {
+      backgroundColor: 'rgba(255, 255, 255, 0.2)',
+      backdropFilter: 'blur(12px)',
+      borderRadius: token.borderRadiusLG,
+      padding: '40px',
+      boxShadow: token.boxShadow,
+      border: '1px solid rgba(255, 255, 255, 0.3)',
+      minWidth: 280,
+      maxWidth: '75vw',
+    },
+    footer: {
+      flexShrink: 0, // 防止页脚被压缩
+      position: 'relative',
+      bottom: 50,
+      zIndex: 1,
     },
   };
 });
@@ -128,7 +154,7 @@ const Login: React.FC = () => {
     <div className={styles.container}>
       <Helmet>
         <title>
-          { '登录页'}
+          {'登录页'}
           - {Settings.title}
         </title>
       </Helmet>
@@ -138,164 +164,171 @@ const Login: React.FC = () => {
           padding: '32px 0',
         }}
       >
-        <LoginForm
-          contentStyle={{
-            minWidth: 280,
-            maxWidth: '75vw',
-          }}
-          logo={<img alt="logo" src="/logo.svg" />}
-          title="智能数据分析"
-          subTitle={'智能数据分析 是集合AIGC技术生成图表图文信息的应用'}
-          actions={[
-            <FormattedMessage
-              key="loginWith"
-              id="pages.login.loginWith"
-              defaultMessage="其他登录方式 :"
-            />,
-            <ActionIcons key="icons" />,
-          ]}
-          onFinish={async (values) => {
-            await handleSubmit(values as API.UserLoginRequest);
-          }}
-        >
-          <Tabs
-            activeKey={type}
-            onChange={setType}
-            centered
-            items={[
-              {
-                key: 'account',
-                label: '账户密码登录',
-              },
-              {
-                key: 'mobile',
-                label: '手机号登录',
-              },
-            ]}
-          />
-
-          {type === 'account' && (
-            <>
-              <ProFormText
-                name="userAccount"
-                fieldProps={{
-                  size: 'large',
-                  prefix: <UserOutlined />,
-                }}
-                placeholder={'请输入用户名'}
-                rules={[
-                  {
-                    required: true,
-                    message: '用户名是必填项！',
-                  },
-                ]}
-              />
-              <ProFormText.Password
-                name="userPassword"
-                fieldProps={{
-                  size: 'large',
-                  prefix: <LockOutlined />,
-                }}
-                placeholder={'请输入密码'}
-                rules={[
-                  {
-                    required: true,
-                    message: '密码是必填项！',
-                  },
-                ]}
-              />
-            </>
-          )}
-
-          {status === 'error' && loginType === 'mobile' && <LoginMessage content="验证码错误" />}
-          {type === 'mobile' && (
-            <>
-              <ProFormText
-                fieldProps={{
-                  size: 'large',
-                  prefix: <MobileOutlined />,
-                }}
-                name="mobile"
-                placeholder='手机号'
-                rules={[
-                  {
-                    required: true,
-                    message: (
-                      <FormattedMessage
-                        id="pages.login.phoneNumber.required"
-                        defaultMessage="请输入手机号！"
-                      />
-                    ),
-                  },
-                  {
-                    pattern: /^1\d{10}$/,
-                    message: (
-                      <FormattedMessage
-                        id="pages.login.phoneNumber.invalid"
-                        defaultMessage="手机号格式错误！"
-                      />
-                    ),
-                  },
-                ]}
-              />
-              <ProFormCaptcha
-                fieldProps={{
-                  size: 'large',
-                  prefix: <LockOutlined />,
-                }}
-                captchaProps={{
-                  size: 'large',
-                }}
-                placeholder='请输入验证码'
-                name="captcha"
-                rules={[
-                  {
-                    required: true,
-                    message: (
-                      <FormattedMessage
-                        id="pages.login.captcha.required"
-                        defaultMessage="请输入验证码！"
-                      />
-                    ),
-                  },
-                ]}
-                onGetCaptcha={async (phone) => {
-                  const result = await getFakeCaptcha({
-                    phone,
-                  });
-                  if (!result) {
-                    return;
-                  }
-                  message.success('获取验证码成功！验证码为：1234');
-                }}
-              />
-            </>
-          )}
-
-          <div
-            style={{
-              marginBottom: 24,
-            }}
-          >
-            <ProFormCheckbox noStyle name="autoLogin">
-              <FormattedMessage id="pages.login.rememberMe" defaultMessage="自动登录" />
-            </ProFormCheckbox>
-            <a
-              style={{
-                float: 'right',
+        <div className={styles.loginWrapper}>
+          <div className={styles.loginFormContainer}>
+            <LoginForm
+              contentStyle={{
+                minWidth: 280,
+                maxWidth: '75vw',
+              }}
+              logo={<img alt="logo" src="/logo.svg"/>}
+              title="智能数据分析"
+              subTitle={'智能数据分析 是集合AIGC技术生成图表图文信息的应用'}
+              actions={[
+                <FormattedMessage
+                  key="loginWith"
+                  id="pages.login.loginWith"
+                  defaultMessage="其他登录方式 :"
+                />,
+                <ActionIcons key="icons"/>,
+              ]}
+              onFinish={async (values) => {
+                await handleSubmit(values as API.UserLoginRequest);
               }}
             >
-              <FormattedMessage id="pages.login.forgotPassword" defaultMessage="忘记密码" />
-            </a>
-            <Link
-              to="/user/register"
-            >
-              注册
-            </Link>
+              <Tabs
+                activeKey={type}
+                onChange={setType}
+                centered
+                items={[
+                  {
+                    key: 'account',
+                    label: '账户密码登录',
+                  },
+                  {
+                    key: 'mobile',
+                    label: '手机号登录',
+                  },
+                ]}
+              />
+
+              {type === 'account' && (
+                <>
+                  <ProFormText
+                    name="userAccount"
+                    fieldProps={{
+                      size: 'large',
+                      prefix: <UserOutlined/>,
+                    }}
+                    placeholder={'请输入用户名'}
+                    rules={[
+                      {
+                        required: true,
+                        message: '用户名是必填项！',
+                      },
+                    ]}
+                  />
+                  <ProFormText.Password
+                    name="userPassword"
+                    fieldProps={{
+                      size: 'large',
+                      prefix: <LockOutlined/>,
+                    }}
+                    placeholder={'请输入密码'}
+                    rules={[
+                      {
+                        required: true,
+                        message: '密码是必填项！',
+                      },
+                    ]}
+                  />
+                </>
+              )}
+
+              {status === 'error' && loginType === 'mobile' && <LoginMessage content="验证码错误"/>}
+              {type === 'mobile' && (
+                <>
+                  <ProFormText
+                    fieldProps={{
+                      size: 'large',
+                      prefix: <MobileOutlined/>,
+                    }}
+                    name="mobile"
+                    placeholder='手机号'
+                    rules={[
+                      {
+                        required: true,
+                        message: (
+                          <FormattedMessage
+                            id="pages.login.phoneNumber.required"
+                            defaultMessage="请输入手机号！"
+                          />
+                        ),
+                      },
+                      {
+                        pattern: /^1\d{10}$/,
+                        message: (
+                          <FormattedMessage
+                            id="pages.login.phoneNumber.invalid"
+                            defaultMessage="手机号格式错误！"
+                          />
+                        ),
+                      },
+                    ]}
+                  />
+                  <ProFormCaptcha
+                    fieldProps={{
+                      size: 'large',
+                      prefix: <LockOutlined/>,
+                    }}
+                    captchaProps={{
+                      size: 'large',
+                    }}
+                    placeholder='请输入验证码'
+                    name="captcha"
+                    rules={[
+                      {
+                        required: true,
+                        message: (
+                          <FormattedMessage
+                            id="pages.login.captcha.required"
+                            defaultMessage="请输入验证码！"
+                          />
+                        ),
+                      },
+                    ]}
+                    onGetCaptcha={async (phone) => {
+                      const result = await getFakeCaptcha({
+                        phone,
+                      });
+                      if (!result) {
+                        return;
+                      }
+                      message.success('获取验证码成功！验证码为：1234');
+                    }}
+                  />
+                </>
+              )}
+
+              <div
+                style={{
+                  marginBottom: 24,
+                }}
+              >
+                <ProFormCheckbox noStyle name="autoLogin">
+                  <FormattedMessage id="pages.login.rememberMe" defaultMessage="自动登录"/>
+                </ProFormCheckbox>
+                <a
+                  style={{
+                    float: 'right',
+                  }}
+                >
+                  <FormattedMessage id="pages.login.forgotPassword" defaultMessage="忘记密码"/>
+                </a>
+                <Link
+                  to="/user/register"
+                >
+                  没有账号？去注册
+                </Link>
+              </div>
+            </LoginForm>
           </div>
-        </LoginForm>
+        </div>
       </div>
-      <Footer />
+
+      <div className={styles.footer}>
+        <Footer/>
+      </div>
     </div>
   );
 };

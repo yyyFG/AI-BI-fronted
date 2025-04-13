@@ -8,6 +8,7 @@ import {LoginForm, ProFormText} from '@ant-design/pro-form';
 import {Helmet, Link} from "@@/exports";
 import Settings from "../../../../config/defaultSettings";
 import {createStyles} from "antd-style";
+
 const useStyles = createStyles(({ token }) => {
   return {
     action: {
@@ -36,10 +37,36 @@ const useStyles = createStyles(({ token }) => {
       display: 'flex',
       flexDirection: 'column',
       height: '100vh',
-      overflow: 'auto',
+      overflow: 'hidden',
       backgroundImage:
-        "url('https://mdn.alipayobjects.com/yuyan_qk0oxh/afts/img/V-_oS6r-i7wAAAAAAAAAAAAAFl94AQBr')",
+        "url('https://alist.yyyai.xyz/d/picture/BIpicture/Blue-Fade-PNG-Clipart.png?sign=fycpv6XHhb_16wOJ_s0JXjqiV2D85kar6ulhE9i0ZzI=:0')",
       backgroundSize: '100% 100%',
+    },
+    loginWrapper: {
+      position: 'relative',
+      zIndex: 1,
+      flex: 1,
+      padding: '32px 0',
+      display: 'flex',
+      flexDirection: 'column',
+      justifyContent: 'center',
+      alignItems: 'center',
+    },
+    loginFormContainer: {
+      backgroundColor: 'rgba(255, 255, 255, 0.2)',
+      backdropFilter: 'blur(12px)',
+      borderRadius: token.borderRadiusLG,
+      padding: '40px',
+      boxShadow: token.boxShadow,
+      border: '1px solid rgba(255, 255, 255, 0.3)',
+      minWidth: 280,
+      maxWidth: '75vw',
+    },
+    footer: {
+      flexShrink: 0, // 防止页脚被压缩
+      position: 'relative',
+      bottom: 50,
+      zIndex: 1,
     },
   };
 });
@@ -93,37 +120,39 @@ const Register: React.FC = () => {
               padding: '32px 0',
             }}
         >
-          <LoginForm
-              submitter={{
+          <div className={styles.loginWrapper}>
+            <div className={styles.loginFormContainer}>
+              <LoginForm
+                submitter={{
                   searchConfig: {
-                      submitText: '注册'
+                    submitText: '注册'
                   }
-              }}
-              contentStyle={{
-                minWidth: 280,
-                maxWidth: '75vw',
-              }}
-              logo={<img alt="logo" src="/logo.svg" />}
-              title="智能数据分析"
-              subTitle={'智能数据分析 是集合AIGC技术生成图表图文信息的应用'}
-              onFinish={async (values) => {
-                await handleSubmit(values as API.UserLoginRequest);
-              }}
-          >
-            <Tabs
-                activeKey={type}
-                onChange={setType}
-                centered
-                items={[
-                  {
-                    key: 'account',
-                    label: '账户密码注册',
-                  },
-                ]}
-            />
-            {type === 'account' && (
-                <>
-                  <ProFormText
+                }}
+                contentStyle={{
+                  minWidth: 280,
+                  maxWidth: '75vw',
+                }}
+                logo={<img alt="logo" src="/logo.svg" />}
+                title="智能数据分析"
+                subTitle={'智能数据分析 是集合AIGC技术生成图表图文信息的应用'}
+                onFinish={async (values) => {
+                  await handleSubmit(values as API.UserLoginRequest);
+                }}
+              >
+                <Tabs
+                  activeKey={type}
+                  onChange={setType}
+                  centered
+                  items={[
+                    {
+                      key: 'account',
+                      label: '账户密码注册',
+                    },
+                  ]}
+                />
+                {type === 'account' && (
+                  <>
+                    <ProFormText
                       name="userAccount"
                       fieldProps={{
                         size: 'large',
@@ -136,8 +165,8 @@ const Register: React.FC = () => {
                           message: '账号是必填项！',
                         },
                       ]}
-                  />
-                  <ProFormText.Password
+                    />
+                    <ProFormText.Password
                       name="userPassword"
                       fieldProps={{
                         size: 'large',
@@ -150,8 +179,8 @@ const Register: React.FC = () => {
                           message: '密码是必填项！',
                         },
                       ]}
-                  />
-                  <ProFormText.Password
+                    />
+                    <ProFormText.Password
                       name="checkPassword"
                       fieldProps={{
                         size: 'large',
@@ -164,19 +193,23 @@ const Register: React.FC = () => {
                           message: '检验密码是必填项！',
                         },
                       ]}
-                  />
-                </>
-            )}
-            <div
-                style={{
-                  marginBottom: 24,
-                }}
-            >
-              <Link to="/user/login">已有账号？去登录</Link>
+                    />
+                  </>
+                )}
+                <div
+                  style={{
+                    marginBottom: 24,
+                  }}
+                >
+                  <Link to="/user/login">已有账号？去登录</Link>
+                </div>
+              </LoginForm>
             </div>
-          </LoginForm>
+          </div>
         </div>
-        <Footer />
+        <div className={styles.footer}>
+          <Footer />
+        </div>
       </div>
   );
 };
