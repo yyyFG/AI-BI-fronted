@@ -91,48 +91,58 @@ const ChatPage: React.FC = () => {
   };
 
   return (
-    <PageContainer>
-      <Card className={styles.chatContainer}>
-        <div className={styles.messageList}>
-          <List
-            dataSource={messages}
-            renderItem={(item) => (
-              <List.Item className={item.role === 'user' ? styles.userMessage : styles.assistantMessage}>
-                <div className={styles.messageContent}>
-                  <strong>{item.role === 'user' ? '你' : 'AI助手'}:</strong>
-                  <div>{item.content}</div>
-                </div>
-              </List.Item>
-            )}
-          />
-          <div ref={messageEndRef} />
-        </div>
+  <PageContainer style={{ padding: 0, margin: 0, height: '100vh' }}> {/* 确保外层容器高度 */}
+    <Card
+      className={styles.chatContainer}
+      bodyStyle={{
+        padding: 0,
+        display: 'flex',       // 新增flex布局
+        flexDirection: 'column', // 垂直排列
+        height: '100%'          // 填满父容器
+      }}
+    >
+      {/* 消息列表容器 */}
+      <div className={styles.messageList}>
+        <List
+          dataSource={messages}
+          renderItem={(item) => (
+            <List.Item className={item.role === 'user' ? styles.userMessage : styles.assistantMessage}>
+              <div className={styles.messageContent}>
+                <strong>{item.role === 'user' ? '你' : 'AI助手'}:</strong>
+                <div>{item.content}</div>
+              </div>
+            </List.Item>
+          )}
+        />
+        <div ref={messageEndRef} />
+      </div>
 
-        <div className={styles.inputArea}>
-          <Input.TextArea
-            rows={4}
-            value={input}
-            onChange={(e) => setInput(e.target.value)}
-            onPressEnter={(e) => {
-              if (!e.shiftKey) {
-                e.preventDefault();
-                handleSend();
-              }
-            }}
-            placeholder="输入消息..."
-          />
-          <Button
-            type="primary"
-            icon={<SendOutlined />}
-            onClick={handleSend}
-            loading={loading}
-            className={styles.sendButton}
-          >
-            发送
-          </Button>
-        </div>
-      </Card>
-    </PageContainer>
+      {/* 输入框容器 */}
+      <div className={styles.inputArea}>
+        <Input.TextArea
+          rows={4}
+          value={input}
+          onChange={(e) => setInput(e.target.value)}
+          onPressEnter={(e) => {
+            if (!e.shiftKey) {
+              e.preventDefault();
+              handleSend();
+            }
+          }}
+          placeholder="输入消息..."
+        />
+        <Button
+          type="primary"
+          icon={<SendOutlined />}
+          onClick={handleSend}
+          loading={loading}
+          className={styles.sendButton}
+        >
+          发送
+        </Button>
+      </div>
+    </Card>
+  </PageContainer>
   );
 };
 

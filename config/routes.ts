@@ -9,7 +9,7 @@ export default [
   { path: '/', redirect: '/add_chart'},
   { path: '/add_chart', name: '智能分析', icon: 'barChart', component: './AddChart'},
   { path: '/add_chart_async', name: '智能分析(异步)', icon: 'barChart', component: './AddChartAsync'},
-  { path: '/ai_chat', name: 'AI对话', icon: 'barChart', component: './AIChat'},
+  { path: '/ai_chat', name: 'AI对话', icon: 'MessageTwoTone', component: './AIChat'},
   { path: '/my_chart', name: '我的图表', icon: 'CloudOutlined', component: './MyChart'},
   // { path: '/chart_manage', name: '图表管理', icon: 'SettingOutlined', component: './ChartManage'},
   {

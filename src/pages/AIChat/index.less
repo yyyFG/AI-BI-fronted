@@ -1,10 +1,17 @@
+html, body, #root {
+  height: 100%;
+  overflow: auto; // 建立完整高度继承链‌:ml-citation{ref="1,6" data="citationList"}
+}
+
+// 外层容器
 .chatContainer {
-  height: calc(100vh - 180px);
+  height: 100vh;
   display: flex;
   flex-direction: column;
 
   .messageList {
     flex: 1;
+    min-height: 0;
     overflow-y: auto;
     margin-bottom: 16px;
     padding: 8px;
@@ -35,20 +42,20 @@
     }
   }
 
+  // 输入框区域
   .inputArea {
-    position: relative;
-    width: 100%; // 确保宽度占满父容器
-    margin-top: 250px;
+    position: sticky;
+    bottom: 0;
+    background: white;
+    padding: 10px;
+    border-top: 1px solid #f0f0f0;
+  }
 
-    textarea {
-      resize: none;
-      width: 100%;
-    }
-
-    .sendButton {
-      position: absolute;
-      right: 8px;
-      bottom: 8px;
-    }
+  .sendButton {
+    position: absolute;
+    right: 8px;
+    bottom: 8px;
   }
 }
+
+

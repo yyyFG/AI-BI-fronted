@@ -298,7 +298,7 @@ const TeamManage: React.FC = () => {
 
       {/* 修改信息模态框 */}
       <Modal title="修改队伍信息" open={isTeamModalVisible} onCancel={() => setIsTeamModalVisible(false)} footer={null}>
-        <Form layout="vertical" initialValues={team} onFinish={handleFormSubmit}>
+        <Form layout="vertical"  onFinish={handleFormSubmit}>
           <Form.Item
             label="队伍名"
             name="name"
